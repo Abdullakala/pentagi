@@ -35,3 +35,7 @@ data/*
 # OS
 Thumbs.db
 
+# Local SSL material
+docker-ssl/
+pentagi-ssl/
+
