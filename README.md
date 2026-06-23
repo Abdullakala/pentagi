@@ -760,7 +760,7 @@ curl -O https://raw.githubusercontent.com/vxcontrol/pentagi/master/docker-compos
 docker compose up -d
 ```
 
-Visit [localhost:8443](https://localhost:8443) to access PentAGI Web UI (default is `admin@pentagi.com` / `admin`)
+Visit [localhost:8444](https://localhost:8444) to access PentAGI Web UI (default is `admin@pentagi.com` / `admin`)
 
 > [!NOTE]
 > If you caught an error about `pentagi-network` or `observability-network` or `langfuse-network` you need to run `docker-compose.yml` firstly to create these networks and after that run `docker-compose-langfuse.yml`, `docker-compose-graphiti.yml`, and `docker-compose-observability.yml` to use Langfuse, Graphiti, and Observability services.
@@ -786,15 +786,15 @@ By default, PentAGI binds to `127.0.0.1` (localhost only) for security. To acces
 ```bash
 # Network binding - allow external connections
 PENTAGI_LISTEN_IP=0.0.0.0
-PENTAGI_LISTEN_PORT=8443
+PENTAGI_LISTEN_PORT=8444
 
 # Public URL - use your actual server IP or hostname
 # Replace 192.168.1.100 with your server's IP address
-PUBLIC_URL=https://192.168.1.100:8443
+PUBLIC_URL=https://192.168.1.100:8444
 
 # CORS origins - list all URLs that will access PentAGI
 # Include localhost for local access AND your server IP for external access
-CORS_ORIGINS=https://localhost:8443,https://192.168.1.100:8443
+CORS_ORIGINS=https://localhost:8444,https://192.168.1.100:8444
 ```
 
 > [!IMPORTANT]
@@ -815,33 +815,33 @@ docker compose up -d --force-recreate
 docker ps | grep pentagi
 ```
 
-You should see `0.0.0.0:8443->8443/tcp` or `:::8443->8443/tcp`.
+You should see `0.0.0.0:8444->8444/tcp` or `:::8444->8444/tcp`.
 
-If you see `127.0.0.1:8443->8443/tcp`, the environment variable wasn't picked up. In this case, directly edit `docker-compose.yml` line 31:
+If you see `127.0.0.1:8444->8444/tcp`, the environment variable wasn't picked up. In this case, directly edit `docker-compose.yml` and set the `pentagi` service ports to:
 
 ```yaml
 ports:
-  - "0.0.0.0:8443:8443"
+  - "0.0.0.0:8444:8444"
 ```
 
 Then recreate containers again.
 
-4. **Configure firewall** to allow incoming connections on port 8443:
+4. **Configure firewall** to allow incoming connections on port 8444:
 
 ```bash
 # Ubuntu/Debian with UFW
-sudo ufw allow 8443/tcp
+sudo ufw allow 8444/tcp
 sudo ufw reload
 
 # CentOS/RHEL with firewalld
-sudo firewall-cmd --permanent --add-port=8443/tcp
+sudo firewall-cmd --permanent --add-port=8444/tcp
 sudo firewall-cmd --reload
 ```
 
 5. **Access PentAGI:**
 
-- **Local access:** `https://localhost:8443`
-- **Network access:** `https://your-server-ip:8443`
+- **Local access:** `https://localhost:8444`
+- **Network access:** `https://your-server-ip:8444`
 
 > [!NOTE]
 > You'll need to accept the self-signed SSL certificate warning in your browser when accessing via IP address.
@@ -867,7 +867,7 @@ scraper:
   expose:
     - 3000/tcp  # Changed from 443 to 3000
   ports:
-    - "${SCRAPER_LISTEN_IP:-127.0.0.1}:${SCRAPER_LISTEN_PORT:-9443}:3000"  # Map to port 3000
+    - "${SCRAPER_LISTEN_IP:-127.0.0.1}:${SCRAPER_LISTEN_PORT:-9444}:3000"  # Map to port 3000
   environment:
     - MAX_CONCURRENT_SESSIONS=${LOCAL_SCRAPER_MAX_CONCURRENT_SESSIONS:-10}
     - USERNAME=${LOCAL_SCRAPER_USERNAME:-someuser}
